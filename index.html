@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components</title>
+    <style>
+        .btn{
+            background-color: #0070f3;
+            border: none;
+            color:white;
+            border-radius: 7px;
+            padding: 0 2rem;
+            box-shadow: 0 4px 14px 0 rgba(0, 118, 255, 0.39);
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .btn:hover{
+            background-color: #1d80f0;
+        }
+        .btn:disabled{
+            background-color: #6aa8f0;
+        }
+        .fading {
+            animation: fading 0.5s infinite;
+        }
+        @keyframes fading{
+            0% {
+                color:#6aa8f0;
+            }
+            50% {
+                color:white;
+            }
+            100% {
+                color:#6aa8f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="classic-button-login" class="btn" onclick="login()">Login</button>
+    <button id="classic-button-register" class="btn" onclick="register()">Register</button>
+<script>
+    // function longAction(){
+    //     console.log('hello console')
+    // }
+    const loginButton = document.querySelector('#classic-button-login')
+   
+
+    const login = ()=>{
+        let loginButtonOriginalText = loginButton.textContent
+        loginButton.textContent = 'Loading...'
+        loginButton.setAttribute('disabled','true')
+        loginButton.classList.add('fading')
+        setTimeout(() => {
+            loginButton.textContent = loginButtonOriginalText
+            loginButton.removeAttribute('disabled')
+            loginButton.classList.remove('fading')
+            console.log('Login Response')
+        }, 2000);        
+    }
+
+    const registerButton = document.querySelector('#classic-button-register')
+    
+
+    const register = ()=>{
+        let registerButtonOriginalText = registerButton.textContent
+        registerButton.textContent = 'Loading...'
+        registerButton.setAttribute('disabled','true')
+        registerButton.classList.add('fading')
+        setTimeout(() => {
+            registerButton.textContent = registerButtonOriginalText
+            registerButton.removeAttribute('disabled')
+            registerButton.classList.remove('fading')
+            console.log('Register Response')
+        }, 2000);        
+    }
+</script>
+</body>
+</html>
