@@ -38,8 +38,9 @@
     </style>
 </head>
 <body>
-    <button id="classic-button-login" class="btn" onclick="login()">Login</button>
+    <app-button id="classic-button-login" onclick="login()" text="Login"></app-button>
     <button id="classic-button-register" class="btn" onclick="register()">Register</button>
+
 <script>
     // function longAction(){
     //     console.log('hello console')
@@ -49,14 +50,16 @@
 
     const login = ()=>{
         let loginButtonOriginalText = loginButton.textContent
-        loginButton.textContent = 'Loading...'
-        loginButton.setAttribute('disabled','true')
-        loginButton.classList.add('fading')
+        loginButton.setAttribute('inprogress','true');
+        // loginButton.textContent = 'Loading...'
+        // loginButton.setAttribute('disabled','true')
+        // loginButton.classList.add('fading')
         setTimeout(() => {
             loginButton.textContent = loginButtonOriginalText
-            loginButton.removeAttribute('disabled')
-            loginButton.classList.remove('fading')
-            console.log('Login Response')
+            loginButton.removeAttribute('inprogress');
+            // loginButton.removeAttribute('disabled')
+            // loginButton.classList.remove('fading')
+            // console.log('Login Response')
         }, 2000);        
     }
 
@@ -75,6 +78,23 @@
             console.log('Register Response')
         }, 2000);        
     }
+    const temp = ()=>console.log('temp')
+    class Button extends HTMLElement{
+        constructor(){
+            super();
+            const text = this.getAttribute('text')
+            this.innerHTML = `<button class='btn'>${text}</button>`
+        }
+
+        static get observedAttributes(){
+            return ['inprogress']
+        }
+
+        attributeChangedCallback(attribute,oldValue,newValue){
+
+        }
+    }
+    customElements.define("app-button",Button);
 </script>
 </body>
 </html>
