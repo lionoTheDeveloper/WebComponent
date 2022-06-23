@@ -35,66 +35,125 @@
                 color:#6aa8f0;
             }
         }
+        app-button {
+            display: block;
+        }
+        app-counter{
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <app-button id="classic-button-login" onclick="login()" text="Login"></app-button>
-    <button id="classic-button-register" class="btn" onclick="register()">Register</button>
+    <app-button text="add" onclick="add()"></app-button>
+    <app-button text="remove" onclick="remove()"></app-button>
+    <!-- <app-counter></app-counter> -->
+    <!-- <app-button id="classic-button-login" onclick="login()" text="Login"></app-button>
+    <app-button id="classic-button-register"  onclick="register()" text="Register"></app-button> -->
 
 <script>
-    // function longAction(){
-    //     console.log('hello console')
-    // }
-    const loginButton = document.querySelector('#classic-button-login')
-   
-
-    const login = ()=>{
-        let loginButtonOriginalText = loginButton.textContent
-        loginButton.setAttribute('inprogress','true');
-        // loginButton.textContent = 'Loading...'
-        // loginButton.setAttribute('disabled','true')
-        // loginButton.classList.add('fading')
-        setTimeout(() => {
-            loginButton.textContent = loginButtonOriginalText
-            loginButton.removeAttribute('inprogress');
-            // loginButton.removeAttribute('disabled')
-            // loginButton.classList.remove('fading')
-            // console.log('Login Response')
-        }, 2000);        
+    const add = () => {
+       const counter = document.createElement('app-counter')
+        document.body.append(counter)
     }
-
-    const registerButton = document.querySelector('#classic-button-register')
+    const remove = () => {
+        document.querySelector('app-counter').remove()
+    }
+    // // function longAction(){
+    // //     console.log('hello console')
+    // // }
+    // const loginButton = document.querySelector('#classic-button-login')
     
 
-    const register = ()=>{
-        let registerButtonOriginalText = registerButton.textContent
-        registerButton.textContent = 'Loading...'
-        registerButton.setAttribute('disabled','true')
-        registerButton.classList.add('fading')
-        setTimeout(() => {
-            registerButton.textContent = registerButtonOriginalText
-            registerButton.removeAttribute('disabled')
-            registerButton.classList.remove('fading')
-            console.log('Register Response')
-        }, 2000);        
-    }
-    const temp = ()=>console.log('temp')
+    // const login = ()=>{
+    //     // let loginButtonOriginalText = loginButton.textContent
+    //     loginButton.setAttribute('inprogress','true');
+    //     // loginButton.textContent = 'Loading...'
+    //     // loginButton.setAttribute('disabled','true')
+    //     // loginButton.classList.add('fading')
+    //     let x = 5 +1+
+    //     setTimeout(() => {
+    //         // loginButton.textContent = loginButtonOriginalText
+    //         loginButton.removeAttribute('inprogress');
+    //         // loginButton.removeAttribute('disabled')
+    //         // loginButton.classList.remove('fading')
+    //         console.log('Login Response')
+    //     }, 2000);        
+    // }
+
+    // const registerButton = document.querySelector('#classic-button-register')
+    
+
+    // const register = ()=>{
+    //     registerButton.setAttribute('inprogress','true')
+    //     // let registerButtonOriginalText = registerButton.textContent
+    //     // registerButton.textContent = 'Loading...'
+    //     // registerButton.setAttribute('disabled','true')
+    //     // registerButton.classList.add('fading')
+    //     setTimeout(() => {
+    //         registerButton.removeAttribute('inprogress')
+    //         // registerButton.textContent = registerButtonOriginalText
+    //         // registerButton.removeAttribute('disabled')
+    //         // registerButton.classList.remove('fading')
+    //         console.log('Register Response')
+    //     }, 2000);        
+    // }
+    // const temp = ()=>console.log('temp')
     class Button extends HTMLElement{
         constructor(){
             super();
+            // const text = this.getAttribute('text')
+            // this.innerHTML = `<button class='btn'>${text}</button>`
+        }
+
+        connectedCallback(){
             const text = this.getAttribute('text')
             this.innerHTML = `<button class='btn'>${text}</button>`
         }
-
         static get observedAttributes(){
             return ['inprogress']
         }
 
         attributeChangedCallback(attribute,oldValue,newValue){
-
+            const button = this.querySelector('button');
+            if(newValue){
+                button.textContent = 'loading...'
+                button.setAttribute('disabled','true')
+                button.classList.add('fading')
+            }
+            else{
+                button.textContent = this.getAttribute('text')
+                button.removeAttribute('disabled')
+                button.classList.remove('fading')
+            }
         }
     }
     customElements.define("app-button",Button);
+
+    class Counter extends HTMLElement{
+        constructor(){
+            super()
+            console.log('constructor')
+            // this.innerHTML = 'Temporary'
+
+        }
+        connectedCallback(){
+            console.log('connected')
+            this.innerHTML = 'Temporary'
+        }
+        disConnectedCallback(){
+            console.log('disconnected')
+
+        }
+        attributeChangedCallback(attribute,oldValue,newValue){
+            console.log('attributechanged')
+
+        }
+        adoptedCallback(){
+            console.log('adopted')
+
+        }
+    }
+    customElements.define('app-counter',Counter);
 </script>
 </body>
 </html>
