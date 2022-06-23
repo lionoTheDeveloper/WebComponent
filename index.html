@@ -46,18 +46,40 @@
 <body>
     <app-button text="add" onclick="add()"></app-button>
     <app-button text="remove" onclick="remove()"></app-button>
+    <app-button text="move" onclick="move()"></app-button>
+    <iframe></iframe>
     <!-- <app-counter></app-counter> -->
     <!-- <app-button id="classic-button-login" onclick="login()" text="Login"></app-button>
     <app-button id="classic-button-register"  onclick="register()" text="Register"></app-button> -->
 
 <script>
+    //element lifecycle - constructor, connectedCallback
     const add = () => {
        const counter = document.createElement('app-counter')
-        document.body.append(counter)
+       counter.setAttribute('until','5') 
+       document.body.append(counter)
+
     }
+
+    //element lifecycle - disconnectedCallback
     const remove = () => {
-        document.querySelector('app-counter').remove()
+         document.querySelector('app-counter').remove()
+        
     }
+
+    //element lifecycle - adoptedCallback
+    const move = () =>{
+        
+        const iframe = document.querySelector('iframe')
+        const doc = document.implementation.createHTMLDocument('new document')
+        
+        const destDocument = iframe.contentDocument
+        destDocument.replaceChild(doc.documentElement,destDocument.documentElement)
+        
+        const counter = document.querySelector('app-counter')
+        destDocument.body.appendChild(destDocument.adoptNode(counter))
+    }
+    
     // // function longAction(){
     // //     console.log('hello console')
     // // }
@@ -70,7 +92,7 @@
     //     // loginButton.textContent = 'Loading...'
     //     // loginButton.setAttribute('disabled','true')
     //     // loginButton.classList.add('fading')
-    //     let x = 5 +1+
+    //  
     //     setTimeout(() => {
     //         // loginButton.textContent = loginButtonOriginalText
     //         loginButton.removeAttribute('inprogress');
@@ -138,9 +160,23 @@
         }
         connectedCallback(){
             console.log('connected')
-            this.innerHTML = 'Temporary'
+            this.count = 0;
+            const until = this.getAttribute('until');
+            const intervalId = setInterval(()=>{
+                if(this.count<=until){
+                    this.innerHTML = this.count
+                    this.count++
+                }
+                else{
+                    clearInterval(intervalId)
+
+                }
+                
+            },1000)
+            
+            // this.innerHTML = 'Temporary'
         }
-        disConnectedCallback(){
+        disconnectedCallback(){
             console.log('disconnected')
 
         }
