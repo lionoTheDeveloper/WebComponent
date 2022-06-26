@@ -41,9 +41,15 @@
         app-counter{
             display: block;
         }
+
+        app-button[inprogress]{
+            transform: scale(1.4);
+            transform-origin:top left;
+        }
     </style>
 </head>
 <body>
+    <button class="btn">Start</button>
     <app-button text="add" onclick="add()"></app-button>
     <app-button text="remove" onclick="remove()"></app-button>
     <app-button text="move" onclick="move()"></app-button>
@@ -55,9 +61,17 @@
 <script>
     //element lifecycle - constructor, connectedCallback
     const add = () => {
-       const counter = document.createElement('app-counter')
-       counter.setAttribute('until','5') 
-       document.body.append(counter)
+
+        const addButton = document.querySelector('app-button')
+       addButton.inprogress = true;
+       setTimeout(() => {        
+        const counter = document.createElement('app-counter')
+        counter.setAttribute('until','5') 
+        document.body.append(counter)
+        addButton.inprogress = false;
+
+       }, 2000);
+       
 
     }
 
@@ -135,6 +149,17 @@
             return ['inprogress']
         }
 
+        set inprogress(value){
+            if(value){
+                this.setAttribute('inprogress','true')
+            }
+            else{
+                this.removeAttribute('inprogress')
+            }
+        }
+        get inprogress() {
+            return this.getAttribute('inprogress')
+        }
         attributeChangedCallback(attribute,oldValue,newValue){
             const button = this.querySelector('button');
             if(newValue){
